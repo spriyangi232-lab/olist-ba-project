@@ -1,5 +1,5 @@
 """
-07_check_numbers.py - Final QA: does every number in the documents match the analysis?
+08_check_numbers.py - Final QA: does every number in the documents match the analysis?
 
 It collects every value in results/metrics.json and results/tables/*.csv
 (rounded to 0, 1 and 2 decimals), then scans each document for numbers with a
@@ -7,10 +7,10 @@ decimal point or a thousands comma (for example 6.79 or 1,413) and lists any
 number it cannot find. Plain whole numbers like 2018 or 300 are skipped because
 they are years, thresholds or counts written in words.
 
-Documents checked: README.md, every docs/*.md, docs/case_study.docx and the
+Documents checked: README.md, every docs/*.md, docs/case_study.docx, index.html and the
 visible text of dashboard/dashboard.html.
 
-Run from the project root (last step):   python src/07_check_numbers.py
+Run from the project root (last step):   python src/08_check_numbers.py
 Exit code 0 = everything matched, 1 = at least one unexplained number.
 """
 
@@ -101,6 +101,7 @@ for md in sorted((ROOT / "docs").glob("*.md")):
     documents[f"docs/{md.name}"] = re.sub(r"```mermaid.*?```", " ", text, flags=re.S)
 documents["docs/case_study.docx"] = read_docx(ROOT / "docs" / "case_study.docx")
 documents["dashboard/dashboard.html"] = read_html(ROOT / "dashboard" / "dashboard.html")
+documents["index.html (website)"] = read_html(ROOT / "index.html")
 
 # ---------------------------------------------------------------------------
 # 3. Compare

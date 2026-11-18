@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Olist Delivery Delay Case Study</title>
+<meta name="description" content="Business Analyst case study by Priyangi Singh Chouhan: why 6.79% of Olist orders arrive late and what to fix first.">
+<style>
+  :root { --bg:#f9f9f7; --card:#ffffff; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781; --line:rgba(11,11,11,.10);
+          --blue:#2a78d6; --blue-dark:#1c5cab; --orange:#eb6834; --wash:#eef4fc; }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI",system-ui,-apple-system,sans-serif; line-height:1.55; }
+  a { color:var(--blue-dark); }
+  .wrap { max-width:1100px; margin:0 auto; padding:0 16px; }
+  h1, .lead, .byline { overflow-wrap:anywhere; }
+  body { overflow-x:hidden; }
+  header.hero { background:var(--card); border-bottom:1px solid var(--line); padding:48px 0 36px; }
+  .eyebrow { color:var(--blue-dark); font-weight:600; font-size:14px; letter-spacing:.04em; text-transform:uppercase; }
+  h1 { font-size:clamp(28px,4.5vw,42px); line-height:1.15; margin:8px 0 12px; }
+  .lead { font-size:18px; color:var(--ink2); max-width:760px; margin:0 0 20px; }
+  .byline { color:var(--muted); font-size:14px; }
+  .btns { display:flex; flex-wrap:wrap; gap:10px; margin-top:22px; }
+  .btn { display:inline-block; padding:10px 18px; border-radius:8px; font-weight:600; text-decoration:none; border:1px solid var(--blue); }
+  .btn.primary { background:var(--blue); color:#fff; }
+  .btn.ghost { color:var(--blue-dark); background:#fff; }
+  nav.toc { position:sticky; top:0; z-index:5; background:rgba(249,249,247,.95); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); }
+  nav.toc .wrap { display:flex; gap:18px; overflow-x:auto; padding-top:10px; padding-bottom:10px; font-size:14px; white-space:nowrap; }
+  nav.toc a { text-decoration:none; color:var(--ink2); }
+  section { padding:40px 0 8px; }
+  h2 { font-size:26px; margin:0 0 6px; }
+  .sub { color:var(--ink2); margin:0 0 20px; }
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); gap:12px; }
+  .kpi { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; }
+  .kpi-value { font-size:30px; font-weight:700; }
+  .kpi-label { font-weight:600; margin-top:2px; }
+  .kpi-note { color:var(--muted); font-size:13px; }
+  .problem { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:12px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; }
+  .card h3 { margin:0 0 6px; font-size:17px; }
+  .card p { margin:0; color:var(--ink2); }
+  .finding { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.5fr); gap:20px; align-items:center;
+             background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; margin-bottom:14px; }
+  .finding h3 { margin:6px 0; font-size:19px; }
+  .finding p { margin:0; color:var(--ink2); }
+  .finding-img img { width:100%; height:auto; display:block; border-radius:6px; }
+  .tag { display:inline-block; background:var(--wash); color:var(--blue-dark); font-size:12px; font-weight:700; padding:2px 8px; border-radius:99px; }
+  ol.recs { list-style:none; padding:0; margin:0; counter-reset:r; display:grid; gap:10px; }
+  ol.recs li { counter-increment:r; display:flex; gap:14px; align-items:center; justify-content:space-between;
+               background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 18px; }
+  ol.recs li::before { content:counter(r); font-weight:700; color:#fff; background:var(--blue); border-radius:50%;
+                        min-width:28px; height:28px; display:grid; place-items:center; }
+  ol.recs li div { flex:1; }
+  ol.recs strong, .doc strong { display:block; }
+  ol.recs span, .doc span { color:var(--ink2); font-size:14px; }
+  ol.recs em { font-style:normal; font-size:12px; font-weight:700; color:var(--blue-dark); background:var(--wash);
+               padding:3px 10px; border-radius:99px; white-space:nowrap; }
+  .flows { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:12px; }
+  .flows figure { margin:0; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; }
+  .flows img { width:100%; height:auto; }
+  .flows figcaption { font-weight:600; margin-bottom:8px; }
+  .docs { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr)); gap:10px; }
+  .doc { display:flex; gap:12px; align-items:center; justify-content:space-between; text-decoration:none; color:var(--ink);
+         background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 18px; }
+  .doc:hover { border-color:var(--blue); }
+  .doc b { color:var(--blue-dark); white-space:nowrap; font-size:14px; }
+  .steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr)); gap:10px; counter-reset:s; }
+  .step { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; }
+  .step b { display:block; }
+  .step span { color:var(--ink2); font-size:14px; }
+  .tools { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .tools span { background:var(--card); border:1px solid var(--line); border-radius:99px; padding:4px 12px; font-size:13px; }
+  footer { margin-top:40px; padding:24px 0 40px; border-top:1px solid var(--line); color:var(--muted); font-size:13px; }
+  @media (max-width:760px) {
+    .finding { grid-template-columns:1fr; }
+    ol.recs li { flex-wrap:wrap; }
+    header.hero { padding-top:32px; }
+  }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Business Analyst case study</div>
+    <h1>Delivery Delay Root-Cause Analysis &amp; Customer Satisfaction Improvement</h1>
+    <p class="lead">Late deliveries drive bad reviews. Using 96,203 delivered orders from Olist, a Brazilian
+    marketplace, I found where the delays come from and what the business should fix first.</p>
+    <div class="byline">Priyangi Singh Chouhan &middot; SQL &middot; Python &middot; BRD &middot; Process mapping &middot; Dashboard</div>
+    <div class="btns">
+      <a class="btn primary" href="dashboard/dashboard.html">Open the dashboard</a>
+      <a class="btn ghost" href="docs/case_study.pdf">Read the case study</a>
+      <a class="btn ghost" href="https://github.com/spriyangi232-lab/olist-ba-project">View the code</a>
+    </div>
+  </div>
+</header>
+
+<nav class="toc"><div class="wrap">
+  <a href="#results">Results</a><a href="#problem">Problem</a><a href="#findings">Findings</a>
+  <a href="#recommendations">Recommendations</a><a href="#process">Process maps</a>
+  <a href="#approach">Approach</a><a href="#documents">Documents</a>
+</div></nav>
+
+<main class="wrap">
+  <section id="results">
+    <h2>Headline results</h2>
+    <p class="sub">Orders purchased 2017-01 to 2018-08. Late = delivered after the date promised at checkout.</p>
+    <div class="kpis"><div class="kpi"><div class="kpi-value">93.21%</div><div class="kpi-label">On-time delivery rate</div><div class="kpi-note">6,531 of 96,203 orders late</div></div>
+<div class="kpi"><div class="kpi-value">10.62 days</div><div class="kpi-label">Average delay of late orders</div><div class="kpi-note">after the promised date</div></div>
+<div class="kpi"><div class="kpi-value">6.7x</div><div class="kpi-label">More 1-2 star reviews when late</div><div class="kpi-note">62.42% vs 9.25%</div></div>
+<div class="kpi"><div class="kpi-value">752-1,413</div><div class="kpi-label">Late orders avoidable</div><div class="kpi-note">and 391-734 bad reviews prevented</div></div></div>
+  </section>
+
+  <section id="problem">
+    <h2>The business problem</h2>
+    <p class="sub">Where do delays come from, and what should the business fix first?</p>
+    <div class="problem">
+      <div class="card"><h3>Why it matters</h3><p>A bad review lowers the seller's rating and future sales, adds customer-service
+      cost and makes the customer less likely to return. Late orders get a 1-2 star review 62.42% of the time.</p></div>
+      <div class="card"><h3>Who is involved</h3><p>Four parties touch every order: customer, platform, seller and carrier. Each controls a
+      different part of the delay, so each needs its own measure and owner.</p></div>
+      <div class="card"><h3>What I delivered</h3><p>A BRD, AS-IS / TO-BE process maps, 15 SQL analyses, an impact estimate,
+      10 charts, an interactive dashboard and a 12-page case study.</p></div>
+    </div>
+  </section>
+
+  <section id="findings">
+    <h2>Findings</h2>
+    <p class="sub">One business question per chart. Click a chart to enlarge it.</p>
+    <article class="finding">
+      <div class="finding-text"><span class="tag">Q1</span><h3>How big is the problem?</h3><p>93.21% of orders arrived on time, but the rate fell to 81.04% in March 2018. Feb-Mar 2018 had 14.09% of orders and 34.51% of all late orders: lateness comes in peaks.</p></div>
+      <a href="results/charts/01_monthly_on_time_rate.png" class="finding-img"><img src="results/charts/01_monthly_on_time_rate.png" alt="How big is the problem?" loading="lazy"></a>
+    </article>
+<article class="finding">
+      <div class="finding-text"><span class="tag">Q2</span><h3>How much does lateness hurt reviews?</h3><p>Late orders average 2.27 stars vs 4.29 on time. Even 1-3 days late raises the 1-2 star share to 32.14%.</p></div>
+      <a href="results/charts/02_bad_reviews_by_delay.png" class="finding-img"><img src="results/charts/02_bad_reviews_by_delay.png" alt="How much does lateness hurt reviews?" loading="lazy"></a>
+    </article>
+<article class="finding">
+      <div class="finding-text"><span class="tag">Q3</span><h3>Where does the time go?</h3><p>Late orders spend 19.88 extra days in carrier transit but only 2.93 extra days with the seller. 72.16% of late orders had a seller who handed over on time.</p></div>
+      <a href="results/charts/03_stage_durations.png" class="finding-img"><img src="results/charts/03_stage_durations.png" alt="Where does the time go?" loading="lazy"></a>
+    </article>
+<article class="finding">
+      <div class="finding-text"><span class="tag">Q4</span><h3>Which regions are worst?</h3><p>North-East states have the highest late rates (AL: 21.46%).</p></div>
+      <a href="results/charts/05_state_late_rate.png" class="finding-img"><img src="results/charts/05_state_late_rate.png" alt="Which regions are worst?" loading="lazy"></a>
+    </article>
+<article class="finding">
+      <div class="finding-text"><span class="tag">Q4</span><h3>Which routes produce the most late orders?</h3><p>Sao Paulo to Rio de Janeiro alone produced 1,157 late orders (14.01% late).</p></div>
+      <a href="results/charts/06_routes_late_orders.png" class="finding-img"><img src="results/charts/06_routes_late_orders.png" alt="Which routes produce the most late orders?" loading="lazy"></a>
+    </article>
+<article class="finding">
+      <div class="finding-text"><span class="tag">Q5</span><h3>Do sellers who miss the handover deadline cause delays?</h3><p>Missing the deadline raises the late rate from 5.32% to 20.98%.</p></div>
+      <a href="results/charts/04_sla_breach_vs_late.png" class="finding-img"><img src="results/charts/04_sla_breach_vs_late.png" alt="Do sellers who miss the handover deadline cause delays?" loading="lazy"></a>
+    </article>
+<article class="finding">
+      <div class="finding-text"><span class="tag">Q5</span><h3>Which sellers create excess delays?</h3><p>Ranking by raw late count only finds the biggest sellers (top 20% = 78.65% of volume). Ranked by excess late orders, 125 sellers create 1,061 more late orders than an average seller would.</p></div>
+      <a href="results/charts/07_worst_sellers.png" class="finding-img"><img src="results/charts/07_worst_sellers.png" alt="Which sellers create excess delays?" loading="lazy"></a>
+    </article>
+<article class="finding">
+      <div class="finding-text"><span class="tag">Q7</span><h3>Is the delivery promise accurate?</h3><p>78.87% of orders arrive 7+ days early: the promise is padded for most customers.</p></div>
+      <a href="results/charts/08_promise_accuracy.png" class="finding-img"><img src="results/charts/08_promise_accuracy.png" alt="Is the delivery promise accurate?" loading="lazy"></a>
+    </article>
+<article class="finding">
+      <div class="finding-text"><span class="tag">Q7</span><h3>Where is the promise too tight?</h3><p>States with less buffer see more late orders (r = -0.71). AL gets 8.6 days of buffer and is late 21.46% of the time.</p></div>
+      <a href="results/charts/09_buffer_vs_late_by_state.png" class="finding-img"><img src="results/charts/09_buffer_vs_late_by_state.png" alt="Where is the promise too tight?" loading="lazy"></a>
+    </article>
+<article class="finding">
+      <div class="finding-text"><span class="tag">Impact</span><h3>What is fixing it worth?</h3><p>Bringing the worst 125 sellers and 5 worst routes to the platform average avoids 752-1,413 late orders and 391-734 1-2 star reviews over 20 months.</p></div>
+      <a href="results/charts/10_impact_estimate.png" class="finding-img"><img src="results/charts/10_impact_estimate.png" alt="What is fixing it worth?" loading="lazy"></a>
+    </article>
+  </section>
+
+  <section id="recommendations">
+    <h2>Prioritised recommendations</h2>
+    <p class="sub">Ranked by impact and effort. Full roadmap (30/60/90 days) in the case study.</p>
+    <ol class="recs"><li><div><strong>Seller scorecard and handover alerts</strong><span>Weekly ranking by excess late orders; alert 24 hours before the shipping limit date.</span></div><em>Quick win</em></li>
+<li><div><strong>Re-set delivery estimates</strong><span>Add buffer for the lowest-buffer states (AL, MA, SE, ES, CE); trim it where it is excessive.</span></div><em>Quick win</em></li>
+<li><div><strong>Route service levels with carriers</strong><span>Targets and monthly reviews for SP to RJ, SP to BA, SP to CE and PR to RJ.</span></div><em>Major project</em></li>
+<li><div><strong>Peak-season capacity plan</strong><span>Agree carrier capacity six weeks before Black Friday and other known peaks.</span></div><em>Major project</em></li>
+<li><div><strong>Proactive customer messages</strong><span>Tell customers about an at-risk order before the promised date passes.</span></div><em>Plan next</em></li></ol>
+  </section>
+
+  <section id="process">
+    <h2>Process maps</h2>
+    <p class="sub">Order fulfilment across customer, platform, seller and carrier. Orange = pain point, blue = improvement.</p>
+    <div class="flows">
+      <figure><figcaption>AS-IS</figcaption><a href="docs/diagrams/as_is.png"><img src="docs/diagrams/as_is.png" alt="AS-IS order fulfilment flow" loading="lazy"></a></figure>
+      <figure><figcaption>TO-BE</figcaption><a href="docs/diagrams/to_be.png"><img src="docs/diagrams/to_be.png" alt="TO-BE order fulfilment flow" loading="lazy"></a></figure>
+    </div>
+  </section>
+
+  <section id="approach">
+    <h2>Approach</h2>
+    <p class="sub">From business problem to measurable recommendation.</p>
+    <div class="steps">
+      <div class="step"><b>1. Define</b><span>Problem, stakeholders, SMART objectives, requirements</span></div>
+      <div class="step"><b>2. Map</b><span>AS-IS and TO-BE swimlanes with pain points</span></div>
+      <div class="step"><b>3. Clean</b><span>96,203 orders, written definitions, data-quality flags</span></div>
+      <div class="step"><b>4. Analyse</b><span>15 SQL queries, one per business question</span></div>
+      <div class="step"><b>5. Estimate</b><span>Impact range with written assumptions</span></div>
+      <div class="step"><b>6. Communicate</b><span>Dashboard, case study, KPI definitions</span></div>
+    </div>
+    <div class="tools"><span>SQL (SQLite, CTEs, window functions)</span><span>Python (pandas)</span><span>matplotlib</span>
+      <span>Plotly</span><span>python-docx</span><span>Mermaid</span><span>Power BI</span><span>Jupyter</span></div>
+  </section>
+
+  <section id="documents">
+    <h2>Documents and code</h2>
+    <p class="sub">Everything opens in the browser.</p>
+    <div class="docs"><a class="doc" href="dashboard/dashboard.html"><div><strong>Interactive dashboard</strong><span>KPI tiles, trend, states, routes, sellers, categories</span></div><b>Open &rarr;</b></a>
+<a class="doc" href="docs/case_study.pdf"><div><strong>Case study (PDF, 12 pages)</strong><span>Full write-up with charts, recommendations and roadmap</span></div><b>Read &rarr;</b></a>
+<a class="doc" href="https://github.com/spriyangi232-lab/olist-ba-project/blob/main/docs/BRD.md"><div><strong>Business Requirements Document</strong><span>Objectives, stakeholders, RACI, FR-01 to FR-16, KPIs</span></div><b>Read &rarr;</b></a>
+<a class="doc" href="https://github.com/spriyangi232-lab/olist-ba-project/blob/main/docs/process_flows.md"><div><strong>Process flows</strong><span>AS-IS and TO-BE swimlanes with pain points and fixes</span></div><b>Read &rarr;</b></a>
+<a class="doc" href="https://github.com/spriyangi232-lab/olist-ba-project/blob/main/sql/analysis.sql"><div><strong>SQL analysis</strong><span>15 queries, each labelled with its business question</span></div><b>View &rarr;</b></a>
+<a class="doc" href="https://github.com/spriyangi232-lab/olist-ba-project/blob/main/notebooks/analysis.ipynb"><div><strong>Notebook walkthrough</strong><span>Question, query, result, chart and insight</span></div><b>View &rarr;</b></a>
+<a class="doc" href="https://github.com/spriyangi232-lab/olist-ba-project/blob/main/docs/data_validation_report.md"><div><strong>Data validation report</strong><span>Row counts, exclusions and data-quality issues</span></div><b>Read &rarr;</b></a>
+<a class="doc" href="https://github.com/spriyangi232-lab/olist-ba-project/blob/main/docs/powerbi_guide.md"><div><strong>Power BI guide</strong><span>Data model, DAX measures and layout to rebuild the dashboard</span></div><b>Read &rarr;</b></a></div>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  Built by Priyangi Singh Chouhan. Data: Brazilian E-Commerce Public Dataset by Olist
+  (<a href="https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce">Kaggle</a>,
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>). Non-commercial portfolio project, not affiliated with Olist.
+  Every number on this page is generated from <a href="https://github.com/spriyangi232-lab/olist-ba-project/blob/main/results/metrics.json">results/metrics.json</a>.
+</div></footer>
+</body>
+</html>

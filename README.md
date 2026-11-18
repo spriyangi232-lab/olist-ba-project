@@ -2,6 +2,16 @@
 
 A Business Analyst case study by **Priyangi Singh Chouhan**: business problem → stakeholders → requirements → process analysis → data analysis (SQL + Python) → KPIs → recommendations → impact estimate.
 
+### View it live (nothing to install)
+
+| | |
+|---|---|
+| **Project website** | https://spriyangi232-lab.github.io/olist-ba-project/ |
+| **Interactive dashboard** | https://spriyangi232-lab.github.io/olist-ba-project/dashboard/dashboard.html |
+| **Case study (PDF)** | https://spriyangi232-lab.github.io/olist-ba-project/docs/case_study.pdf |
+| **BRD** | [docs/BRD.md](docs/BRD.md) |
+| **Notebook walkthrough** | [notebooks/analysis.ipynb](notebooks/analysis.ipynb) |
+
 ## Business problem
 
 Late deliveries drive bad reviews, which hurt repeat purchases and seller ratings. Using 96,203 delivered orders from Olist, a Brazilian marketplace (Jan 2017 to Aug 2018), I set out to answer: **where do delays come from, and what should the business fix first?**
@@ -58,8 +68,11 @@ Details, the impact-vs-effort table and a 30/60/90-day roadmap are in the [case 
 
 ```
 olist-ba-project/
-├── data/raw/                  Kaggle CSVs (not committed)
-├── data/processed/            cleaned CSVs + olist.db (not committed)
+├── index.html                 project website (GitHub Pages home page)
+├── run_all.py                 rebuilds everything with one command
+├── run_all.bat                same, double-click on Windows
+├── data/raw/                  the 8 Olist CSVs used (included, see data/README.md)
+├── data/processed/            cleaned CSVs + olist.db (created by run_all.py)
 ├── src/
 │   ├── 01_clean.py            load, clean, validate, build SQLite
 │   ├── 02_run_sql.py          run every query, save tables, write metrics
@@ -67,7 +80,8 @@ olist-ba-project/
 │   ├── 04_charts.py           10 report charts
 │   ├── 05_dashboard.py        offline interactive dashboard
 │   ├── 06_case_study.py       case study .docx and .pdf
-│   └── 07_check_numbers.py    QA: checks every number in the documents
+│   ├── 07_website.py          project website (index.html)
+│   └── 08_check_numbers.py    QA: checks every number in the documents
 ├── sql/analysis.sql           15 business queries, each labelled with its question
 ├── notebooks/analysis.ipynb   question → query → result → chart → insight
 ├── results/
@@ -81,39 +95,24 @@ olist-ba-project/
 └── README.md
 ```
 
-## How to run
+## Run it yourself
 
-1. Download the [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) from Kaggle and unzip the CSVs into `data/raw/`.
-2. Install the packages (Python 3.10+):
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Run the scripts in order from the project root:
-   ```bash
-   python src/01_clean.py
-   ```
-   ```bash
-   python src/02_run_sql.py
-   ```
-   ```bash
-   python src/03_impact.py
-   ```
-   ```bash
-   python src/04_charts.py
-   ```
-   ```bash
-   python src/05_dashboard.py
-   ```
-   ```bash
-   python src/06_case_study.py
-   ```
-   ```bash
-   python src/07_check_numbers.py
-   ```
-4. Open `dashboard/dashboard.html` in any browser, or `notebooks/analysis.ipynb` in Jupyter.
+The data is already in the repository, so there is nothing to download. With Python 3.10+ installed:
 
-`06_case_study.py` converts the Word file to PDF with docx2pdf, which needs Microsoft Word. Without Word, open `docs/case_study.docx` and export it as PDF.
+```bash
+git clone https://github.com/spriyangi232-lab/olist-ba-project.git
+```
+```bash
+cd olist-ba-project
+```
+```bash
+python run_all.py
+```
+
+`run_all.py` installs any missing packages, runs the eight scripts in order, re-runs the notebook and finishes with the number check. It takes about a minute. On Windows you can also double-click `run_all.bat`.
+
+The PDF step uses Microsoft Word through docx2pdf. On a computer without Word, every other output is still built and `docs/case_study.docx` can be exported to PDF by hand.
 
 ## Data source and licence
 
-Data: [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce), Kaggle, licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). The raw data is not included in this repository. This is a non-commercial portfolio project and is not affiliated with Olist.
+Data: [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce), Kaggle, licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). The 8 CSV files used are included unchanged in `data/raw/` with credit to Olist, under the same licence; the unused geolocation file is left out. This is a non-commercial portfolio project and is not affiliated with Olist.

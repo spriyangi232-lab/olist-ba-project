@@ -8,7 +8,7 @@
 | **Date** | 18 November 2026 |
 | **Status** | Personal preparation notes |
 
-Every number here comes from `results/metrics.json`. If I re-run the analysis, I re-check this file with `src/07_check_numbers.py`.
+Every number here comes from `results/metrics.json`. If I re-run the analysis, I re-check this file with `src/08_check_numbers.py`.
 
 ---
 
