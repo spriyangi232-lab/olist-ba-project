@@ -1,0 +1,35 @@
+%%{init: {"flowchart": {"nodeSpacing": 30, "rankSpacing": 45, "wrappingWidth": 340}, "themeVariables": {"fontSize": "15px"}}}%%
+flowchart TB
+    subgraph CUS["CUSTOMER"]
+        direction LR
+        C1["Places order<br/>and pays"] --> C2["Sees one estimated<br/>delivery date"] --> C3["Waits with no update<br/>if parcel is delayed<br/><b>PAIN 4: no alert before<br/>the date is missed</b>"] --> C4["Receives parcel"] --> C5["Writes review<br/><b>PAIN 5: 62.42% of late orders<br/>get a 1-2 star review</b>"]
+    end
+    subgraph PLA["PLATFORM (OLIST)"]
+        direction LR
+        P1["Approves payment"] --> P2["Sets estimate with the<br/>same logic for every route<br/><b>PAIN 1: too tight for the<br/>North-East (AL 21.46% late)</b>"] --> P3["Monthly review of<br/>complaints and ratings<br/><b>PAIN 6: no seller or route<br/>scorecard; issues found late</b>"]
+    end
+    subgraph SEL["SELLER"]
+        direction LR
+        S1["Receives order"] --> S2["Picks and packs"] --> S3["Hands parcel to carrier<br/>by shipping limit date<br/><b>PAIN 2: 8.86% miss the deadline;<br/>their late rate is 20.98%</b>"]
+    end
+    subgraph CAR["CARRIER"]
+        direction LR
+        K1["Collects parcel"] --> K2["Line-haul transit<br/>between states<br/><b>PAIN 3: late orders spend 27.89<br/>days in transit vs 8.01 on time</b>"] --> K3["Last-mile delivery"]
+    end
+
+    CUS ~~~ PLA ~~~ SEL ~~~ CAR
+    C1 -.-> P1
+    P2 -.-> C2
+    P1 -.-> S1
+    S3 -.-> K1
+    K3 -.-> C4
+    C5 -.-> P3
+
+    classDef pain fill:#fde3d8,stroke:#eb6834,stroke-width:2px,color:#0b0b0b
+    classDef step fill:#ffffff,stroke:#898781,color:#0b0b0b
+    class C3,C5,P2,P3,S3,K2 pain
+    class C1,C2,C4,P1,S1,S2,K1,K3 step
+    style CUS fill:#f9f9f7,stroke:#c3c2b7
+    style PLA fill:#f9f9f7,stroke:#c3c2b7
+    style SEL fill:#f9f9f7,stroke:#c3c2b7
+    style CAR fill:#f9f9f7,stroke:#c3c2b7

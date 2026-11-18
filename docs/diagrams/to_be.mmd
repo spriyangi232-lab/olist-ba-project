@@ -1,0 +1,38 @@
+%%{init: {"flowchart": {"nodeSpacing": 30, "rankSpacing": 45, "wrappingWidth": 340}, "themeVariables": {"fontSize": "15px"}}}%%
+flowchart TB
+    subgraph CUS["CUSTOMER"]
+        direction LR
+        C1["Places order<br/>and pays"] --> C2["Sees estimate based on<br/>route and seller history"] --> C3["Gets a message and new<br/>date if order is at risk<br/><b>FIX 4: customer told before<br/>the date passes</b>"] --> C4["Receives parcel"] --> C5["Writes review"]
+    end
+    subgraph PLA["PLATFORM (OLIST)"]
+        direction LR
+        P1["Approves payment"] --> P2["Sets estimate by route<br/>and seller track record<br/><b>FIX 1: re-set estimates for<br/>AL, MA, SE, ES, CE</b>"] --> P4["Daily monitoring dashboard<br/>flags at-risk orders"] --> P5["Weekly seller scorecard and<br/>route watchlist review<br/><b>FIX 5: sellers ranked by<br/>excess late orders</b>"]
+    end
+    subgraph SEL["SELLER"]
+        direction LR
+        S1["Receives order"] --> S2["Picks and packs"] --> S3["Gets alert 24h before<br/>shipping limit date<br/><b>FIX 2: alert and SLA<br/>follow-up for flagged sellers</b>"] --> S4["Hands parcel to<br/>carrier on time"]
+    end
+    subgraph CAR["CARRIER"]
+        direction LR
+        K1["Collects parcel"] --> K2["Line-haul transit with<br/>route-level service levels<br/><b>FIX 3: service levels and peak<br/>plan for SP to RJ, BA, CE; PR to RJ</b>"] --> K3["Last-mile delivery"]
+    end
+
+    CUS ~~~ PLA ~~~ SEL ~~~ CAR
+    C1 -.-> P1
+    P2 -.-> C2
+    P1 -.-> S1
+    S4 -.-> K1
+    K2 -.-> P4
+    P4 -.-> C3
+    K3 -.-> C4
+
+    classDef fix fill:#d9e8fa,stroke:#2a78d6,stroke-width:2px,color:#0b0b0b
+    classDef newstep fill:#ffffff,stroke:#2a78d6,stroke-width:2px,color:#0b0b0b
+    classDef step fill:#ffffff,stroke:#898781,color:#0b0b0b
+    class C3,P2,P5,S3,K2 fix
+    class C2,P4,S4 newstep
+    class C1,C4,C5,P1,S1,S2,K1,K3 step
+    style CUS fill:#f9f9f7,stroke:#c3c2b7
+    style PLA fill:#f9f9f7,stroke:#c3c2b7
+    style SEL fill:#f9f9f7,stroke:#c3c2b7
+    style CAR fill:#f9f9f7,stroke:#c3c2b7

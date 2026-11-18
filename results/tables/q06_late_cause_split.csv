@@ -1,0 +1,3 @@
+late_cause,late_orders,share_of_late_orders_pct,avg_seller_handling_days,avg_carrier_transit_days,avg_delay_days
+"Seller on time, late after handover",4695,72.16,2.56,31.56,10.92
+Seller missed handover deadline,1811,27.84,13.3,18.36,9.83

@@ -1,0 +1,16 @@
+# Raw and processed data are not committed (download from Kaggle, then run src/01_clean.py)
+data/
+*.db
+
+# Python / Jupyter
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+~$*

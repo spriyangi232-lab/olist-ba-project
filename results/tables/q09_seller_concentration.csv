@@ -1,0 +1,4 @@
+segment,sellers,late_orders,share_of_late_orders_pct,share_of_order_volume_pct,late_rate_pct
+Top 10% of sellers,294,4826,73.75,63.29,7.82
+Top 20% of sellers,589,5721,87.42,78.65,7.46
+All sellers,2945,6544,100.0,100.0,6.71
